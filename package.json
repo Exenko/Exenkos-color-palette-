@@ -1,0 +1,24 @@
+{
+  "name": "relief-palette",
+  "version": "1.0.0",
+  "description": "Deterministic OKLCH palette engine that solves for WCAG contrast, plus a depth-first token system for raising and lowering UI elements.",
+  "license": "MIT",
+  "main": "palette.js",
+  "module": "palette.mjs",
+  "exports": {
+    ".": { "import": "./palette.mjs", "require": "./palette.js" },
+    "./tokens.css": "./tokens.css",
+    "./tokens.json": "./tokens.json"
+  },
+  "files": ["palette.js", "palette.mjs", "tokens.css", "tokens.json", "docs", "README.md", "LICENSE"],
+  "sideEffects": ["./palette.js"],
+  "scripts": {
+    "build": "node scripts/build-tokens.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Exenko/Exenkos-color-palette-.git"
+  },
+  "homepage": "https://exenko.github.io/Exenkos-color-palette-/",
+  "keywords": ["oklch", "color-palette", "wcag", "accessibility", "contrast", "design-tokens", "design-system", "elevation", "dark-mode"]
+}

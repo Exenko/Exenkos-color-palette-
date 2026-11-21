@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Relief — Sheen</title>
+<meta name="description" content="Alpha-only gradients: one value, both themes">
+<link rel="stylesheet" href="../tokens.css">
+</head>
+<body>
+<nav style="padding:16px 20px 0;font:400 13px/1.6 Inter,system-ui,sans-serif"><a href="./" style="color:var(--primary)">← all examples</a></nav>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap">
+<style>
+ *,*::before,*::after{box-sizing:border-box}
+ body{margin:0;padding:20px;font:400 14px/1.6 "Inter",ui-sans-serif,system-ui,sans-serif;
+      background:var(--bg-dark);color:var(--text)}
+ h3{font:600 15px/1.3 "Space Grotesk",sans-serif;margin:0}
+ .lbl{font:600 11px/1.2 "Inter",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)}
+ .mono{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace;font-size:11px;color:var(--text-muted)}
+ .muted{color:var(--text-muted)}
+ .cols{display:grid;gap:14px}
+</style>
+<style>
+ .row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+ .sw{border-radius:var(--radius-lg);min-height:92px;padding:12px;display:grid;align-content:end;gap:2px;
+     background-color:var(--bg-light);box-shadow:var(--elev-1)}
+ .cmp{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+ .flat{background:var(--bg-light);border-radius:var(--radius-lg);padding:16px;min-height:76px;display:grid;align-content:center}
+ @media (max-width:760px){.row{grid-template-columns:repeat(2,1fr)}}
+</style>
+<div class="cols">
+  <span class="lbl">Five overlays, over the same bg-light fill</span>
+  <div class="row">
+    <div class="sw" style="background-image:var(--sheen-soft)"><b>sheen-soft</b><span class="mono">the default</span></div>
+    <div class="sw" style="background-image:var(--sheen-strong)"><b>sheen-strong</b><span class="mono">buttons, selects</span></div>
+    <div class="sw" style="background-image:var(--sheen-edge)"><b>sheen-edge</b><span class="mono">glassy top band</span></div>
+    <div class="sw" style="background-image:var(--well-scrim)"><b>well-scrim</b><span class="mono">into a recess</span></div>
+    <div class="sw" style="background-image:var(--ambient-glow)"><b>ambient-glow</b><span class="mono">one big panel</span></div>
+  </div>
+  <div class="cmp">
+    <div class="flat"><span class="lbl">No overlay</span><span class="muted">One flat fill, edge to edge.</span></div>
+    <div class="flat" style="background-image:var(--sheen-soft);box-shadow:var(--elev-2)">
+      <span class="lbl">sheen-soft + elev-2</span><span class="muted">Lit at the top, settling at the foot.</span></div>
+  </div>
+</div>
+
+
+<div class="theme-switch">
+  <button type="button" data-set="light">Light</button>
+  <button type="button" data-set="dark">Dark</button>
+  <button type="button" data-set="system">System</button>
+</div>
+<style>
+  .theme-switch { position: fixed; top: max(12px, env(safe-area-inset-top, 0px)); right: max(12px, env(safe-area-inset-right, 0px));
+    z-index: 20; display: flex; gap: 3px; padding: 3px; border-radius: var(--radius-md, 10px);
+    background: var(--bg-dark); box-shadow: var(--recess-1); }
+  .theme-switch button { font: 600 12px/1 "Inter", system-ui, sans-serif; cursor: pointer; border: 0; color: var(--text-muted);
+    background: transparent; border-radius: var(--radius-sm, 6px); padding: 7px 10px; }
+  .theme-switch button[aria-pressed="true"] { color: var(--text); background-color: var(--bg-light);
+    background-image: var(--sheen-soft); box-shadow: var(--elev-1); }
+  .theme-switch button:focus-visible { outline: none; box-shadow: var(--ring-focus); }
+</style>
+<script>
+  (function () {
+    var root = document.documentElement, sw = document.querySelector('.theme-switch');
+    var saved = null;
+    try { saved = localStorage.getItem('relief-theme'); } catch (e) {}
+    function apply(mode) {
+      if (mode === 'system') root.removeAttribute('data-theme'); else root.setAttribute('data-theme', mode);
+      Array.prototype.forEach.call(sw.querySelectorAll('button'), function (b) {
+        b.setAttribute('aria-pressed', String(b.dataset.set === mode));
+      });
+      try { localStorage.setItem('relief-theme', mode); } catch (e) {}
+    }
+    sw.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) apply(b.dataset.set); });
+    apply(saved || 'system');
+  })();
+</script>
+</body>
+</html>

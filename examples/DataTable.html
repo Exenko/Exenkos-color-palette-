@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Relief — DataTable</title>
+<meta name="description" content="Pushing the big thing down so the small ones rise">
+<link rel="stylesheet" href="../tokens.css">
+</head>
+<body>
+<nav style="padding:16px 20px 0;font:400 13px/1.6 Inter,system-ui,sans-serif"><a href="./" style="color:var(--primary)">← all examples</a></nav>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+ *,*::before,*::after{box-sizing:border-box}
+ body{margin:0;padding:20px;font:400 14px/1.6 "Inter",ui-sans-serif,system-ui,sans-serif;
+      background:var(--bg-dark);color:var(--text)}
+ h3{font:600 15px/1.3 "Space Grotesk",sans-serif;margin:0}
+ .lbl{font:600 11px/1.2 "Inter",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)}
+ .mono{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace;font-size:11px;color:var(--text-muted)}
+ .muted{color:var(--text-muted)}
+ .cols{display:grid;gap:14px}
+ .ba{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+ @media (max-width:760px){.ba{grid-template-columns:1fr}}
+</style>
+<style>
+ .screen{background:var(--bg-dark);border-radius:var(--radius-xl);padding:14px;display:grid;gap:12px}
+ .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+ .tile{background:var(--bg-light);background-image:var(--sheen-soft);border-radius:var(--radius-lg);
+       padding:12px;box-shadow:var(--elev-2);display:grid;gap:2px}
+ .tile b{font:500 20px/1.2 "JetBrains Mono",monospace;font-variant-numeric:tabular-nums}
+ .well{background:var(--bg-dark);border-radius:var(--radius-lg);box-shadow:var(--recess-2);padding:10px 12px}
+ table{border-collapse:collapse;width:100%;font-size:13px}
+ th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--border-muted)}
+ tr:last-child td{border-bottom:0}
+ th{font:600 10.5px/1.2 "Inter",sans-serif;letter-spacing:.07em;text-transform:uppercase;color:var(--text-muted)}
+ td.n,th.n{text-align:right;font-family:"JetBrains Mono",monospace;font-variant-numeric:tabular-nums}
+ .pill{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:var(--radius-full);
+       font:600 11px/1.6 "Inter",sans-serif}
+ .pill i{width:5px;height:5px;border-radius:99px;background:currentColor}
+ .flatwrap{border:1px solid var(--border-muted);border-radius:8px;padding:10px 12px;background:var(--bg)}
+ @media (max-width:760px){.tiles{grid-template-columns:1fr}}
+</style>
+<div class="ba">
+  <div class="cols"><span class="lbl">Before — everything on one plane</span>
+    <div class="flatwrap" style="display:grid;gap:10px">
+      <div class="tiles">
+        <div class="flatwrap" style="padding:10px"><div class="muted" style="font-size:12px">Runs</div><b>1,284</b></div>
+        <div class="flatwrap" style="padding:10px"><div class="muted" style="font-size:12px">Failed</div><b>37</b></div>
+        <div class="flatwrap" style="padding:10px"><div class="muted" style="font-size:12px">p95</div><b>412ms</b></div>
+      </div>
+      <table><tr><th>Job</th><th class="n">Runs</th><th>State</th></tr>
+        <tr><td>ingest-events</td><td class="n">612</td><td class="muted">ok</td></tr>
+        <tr><td>rebuild-index</td><td class="n">311</td><td class="muted">degraded</td></tr>
+        <tr><td>send-digests</td><td class="n">361</td><td class="muted">ok</td></tr></table>
+    </div>
+  </div>
+  <div class="cols"><span class="lbl">After — table lowered, tiles unchanged</span>
+    <div class="screen">
+      <div class="tiles">
+        <div class="tile"><span class="lbl">Runs</span><b>1,284</b></div>
+        <div class="tile"><span class="lbl">Failed</span><b style="color:var(--danger)">37</b></div>
+        <div class="tile"><span class="lbl">p95</span><b>412<span class="muted" style="font-size:13px">ms</span></b></div>
+      </div>
+      <div class="well">
+        <table>
+          <tr><th>Job</th><th class="n">Runs</th><th>State</th></tr>
+          <tr><td>ingest-events</td><td class="n">612</td>
+            <td><span class="pill" style="color:var(--success)"><i></i>healthy</span></td></tr>
+          <tr><td>rebuild-index</td><td class="n">311</td>
+            <td><span class="pill" style="color:var(--warning)"><i></i>degraded</span></td></tr>
+          <tr><td>send-digests</td><td class="n">361</td>
+            <td><span class="pill" style="color:var(--success)"><i></i>healthy</span></td></tr>
+        </table>
+      </div>
+    </div>
+    <p class="mono" style="margin:0">tiles bg-light + elev-2 · table bg-dark + recess-2 · rules border-muted only</p>
+  </div>
+</div>
+
+
+<div class="theme-switch">
+  <button type="button" data-set="light">Light</button>
+  <button type="button" data-set="dark">Dark</button>
+  <button type="button" data-set="system">System</button>
+</div>
+<style>
+  .theme-switch { position: fixed; top: max(12px, env(safe-area-inset-top, 0px)); right: max(12px, env(safe-area-inset-right, 0px));
+    z-index: 20; display: flex; gap: 3px; padding: 3px; border-radius: var(--radius-md, 10px);
+    background: var(--bg-dark); box-shadow: var(--recess-1); }
+  .theme-switch button { font: 600 12px/1 "Inter", system-ui, sans-serif; cursor: pointer; border: 0; color: var(--text-muted);
+    background: transparent; border-radius: var(--radius-sm, 6px); padding: 7px 10px; }
+  .theme-switch button[aria-pressed="true"] { color: var(--text); background-color: var(--bg-light);
+    background-image: var(--sheen-soft); box-shadow: var(--elev-1); }
+  .theme-switch button:focus-visible { outline: none; box-shadow: var(--ring-focus); }
+</style>
+<script>
+  (function () {
+    var root = document.documentElement, sw = document.querySelector('.theme-switch');
+    var saved = null;
+    try { saved = localStorage.getItem('relief-theme'); } catch (e) {}
+    function apply(mode) {
+      if (mode === 'system') root.removeAttribute('data-theme'); else root.setAttribute('data-theme', mode);
+      Array.prototype.forEach.call(sw.querySelectorAll('button'), function (b) {
+        b.setAttribute('aria-pressed', String(b.dataset.set === mode));
+      });
+      try { localStorage.setItem('relief-theme', mode); } catch (e) {}
+    }
+    sw.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) apply(b.dataset.set); });
+    apply(saved || 'system');
+  })();
+</script>
+</body>
+</html>

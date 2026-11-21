@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Relief — ProgressWell</title>
+<meta name="description" content="A rail cut into the surface, a bar riding above it">
+<link rel="stylesheet" href="../tokens.css">
+</head>
+<body>
+<nav style="padding:16px 20px 0;font:400 13px/1.6 Inter,system-ui,sans-serif"><a href="./" style="color:var(--primary)">← all examples</a></nav>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+ *,*::before,*::after{box-sizing:border-box}
+ body{margin:0;padding:20px;font:400 14px/1.6 "Inter",ui-sans-serif,system-ui,sans-serif;
+      background:var(--bg-dark);color:var(--text)}
+ h3{font:600 15px/1.3 "Space Grotesk",sans-serif;margin:0}
+ .lbl{font:600 11px/1.2 "Inter",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)}
+ .mono{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace;font-size:11px;color:var(--text-muted)}
+ .muted{color:var(--text-muted)}
+ .cols{display:grid;gap:14px}
+ .ba{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+ @media (max-width:760px){.ba{grid-template-columns:1fr}}
+</style>
+<style>
+ .panel{background:var(--bg);background-image:var(--sheen-soft);border-radius:var(--radius-xl);padding:18px;
+        box-shadow:var(--elev-2);display:grid;gap:16px}
+ .flatbar{height:10px;border-radius:99px;background:var(--border-muted);overflow:hidden}
+ .flatbar i{display:block;height:100%;width:62%;background:var(--primary)}
+ .rail{background:var(--bg-dark);background-image:var(--well-scrim);border-radius:var(--radius-full);
+       box-shadow:var(--recess-1);padding:3px}
+ .fill{height:10px;border-radius:var(--radius-full);background-color:var(--primary);
+       background-image:var(--sheen-edge);box-shadow:var(--elev-1)}
+ .meter{display:grid;gap:7px}
+ .meter .top{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+ .meter .n{font:500 15px/1.2 "JetBrains Mono",monospace;font-variant-numeric:tabular-nums}
+ @media (prefers-reduced-motion:no-preference){.fill{transition:width var(--dur-slow) var(--ease-out)}}
+</style>
+<div class="ba">
+  <div class="cols"><span class="lbl">Before — a tinted strip</span>
+    <div class="panel" style="box-shadow:none;background-image:none;border:1px solid var(--border-muted)">
+      <div class="meter"><div class="top"><span>Storage</span><span class="muted">62%</span></div>
+        <div class="flatbar"><i></i></div></div>
+      <div class="meter"><div class="top"><span>Seats</span><span class="muted">18%</span></div>
+        <div class="flatbar"><i style="width:18%;background:var(--success)"></i></div></div>
+    </div>
+  </div>
+  <div class="cols"><span class="lbl">After — the rail is a well</span>
+    <div class="panel">
+      <div class="meter"><div class="top"><span style="font-weight:600">Storage</span><span class="n">62<span class="muted" style="font-size:12px">%</span></span></div>
+        <div class="rail"><div class="fill" style="width:62%"></div></div>
+        <span class="muted" style="font-size:12.5px">124 GB of 200 GB used</span></div>
+      <div class="meter"><div class="top"><span style="font-weight:600">Seats</span><span class="n">18<span class="muted" style="font-size:12px">%</span></span></div>
+        <div class="rail"><div class="fill" style="width:18%;background-color:var(--success)"></div></div>
+        <span class="muted" style="font-size:12.5px">9 of 50 seats assigned</span></div>
+    </div>
+    <p class="mono" style="margin:0">rail: bg-dark + well-scrim + recess-1 · fill: primary + sheen-edge + elev-1</p>
+  </div>
+</div>
+
+
+<div class="theme-switch">
+  <button type="button" data-set="light">Light</button>
+  <button type="button" data-set="dark">Dark</button>
+  <button type="button" data-set="system">System</button>
+</div>
+<style>
+  .theme-switch { position: fixed; top: max(12px, env(safe-area-inset-top, 0px)); right: max(12px, env(safe-area-inset-right, 0px));
+    z-index: 20; display: flex; gap: 3px; padding: 3px; border-radius: var(--radius-md, 10px);
+    background: var(--bg-dark); box-shadow: var(--recess-1); }
+  .theme-switch button { font: 600 12px/1 "Inter", system-ui, sans-serif; cursor: pointer; border: 0; color: var(--text-muted);
+    background: transparent; border-radius: var(--radius-sm, 6px); padding: 7px 10px; }
+  .theme-switch button[aria-pressed="true"] { color: var(--text); background-color: var(--bg-light);
+    background-image: var(--sheen-soft); box-shadow: var(--elev-1); }
+  .theme-switch button:focus-visible { outline: none; box-shadow: var(--ring-focus); }
+</style>
+<script>
+  (function () {
+    var root = document.documentElement, sw = document.querySelector('.theme-switch');
+    var saved = null;
+    try { saved = localStorage.getItem('relief-theme'); } catch (e) {}
+    function apply(mode) {
+      if (mode === 'system') root.removeAttribute('data-theme'); else root.setAttribute('data-theme', mode);
+      Array.prototype.forEach.call(sw.querySelectorAll('button'), function (b) {
+        b.setAttribute('aria-pressed', String(b.dataset.set === mode));
+      });
+      try { localStorage.setItem('relief-theme', mode); } catch (e) {}
+    }
+    sw.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) apply(b.dataset.set); });
+    apply(saved || 'system');
+  })();
+</script>
+</body>
+</html>
